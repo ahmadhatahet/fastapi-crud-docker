@@ -83,4 +83,4 @@ def update_flight(flight_id: int, flight: Flight):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=5400, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=5400, reload=True)
