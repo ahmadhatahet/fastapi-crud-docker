@@ -2,11 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
-from dotenv import load_dotenv
 
 
-# Load environment variables
-load_dotenv()
+# load environment variables
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ModuleNotFoundError as e:
+    pass # in docker environment variables are automatically loaded
 
 # database connection
 DATABASE_URL = f"mariadb+mariadbconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
