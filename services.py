@@ -1,4 +1,6 @@
 from engine import Base, engine, SessionLocal
+import schema
+import models
 from sampleData import insert_sample_data
 
 
@@ -16,6 +18,10 @@ def migrate_db(db):
     # insert sample data
     insert_sample_data(db)
 
+
+def get_all_flights(db):
+    flights = db.query(schema.Flight).all()
+    return list(map( models.Flight.model_validate, flights))
 
 
 if __name__ == "__main__":
