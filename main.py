@@ -11,7 +11,9 @@ app = FastAPI(title="CRUD using Fastapi and Docker")
 @app.get("/")
 def main():
     return {
-        'title': 'this is an API to perform CRUD operations on MariaDB'
+        'title': 'this is an API to perform CRUD operations on MariaDB',
+        'docs': 'http://localhost:5404/docs',
+        'flights': 'http://localhost:5404/flights/{flight_id}'
     }
 
 
