@@ -24,5 +24,10 @@ def get_all_flights(db):
     return list(map( models.Flight.model_validate, flights))
 
 
+def read_flight(db, flight_id):
+    flight = db.query(schema.Flight).filter(schema.Flight.id == flight_id).first()
+    return flight
+
+
 if __name__ == "__main__":
     ...

@@ -28,6 +28,16 @@ def get_all_flights():
     return services.get_all_flights(db)
 
 
+@app.get("/flights/{flight_id}")
+def read_flight(flight_id):
+    db = SessionLocal()
+    flight = services.read_flight(db, flight_id)
+    db.close()
+    if flight is None:
+        raise HTTPException(status_code=404, detail="Flight not found!")
+    return flight
+
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=5400, reload=True)
