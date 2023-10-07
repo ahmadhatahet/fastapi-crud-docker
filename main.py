@@ -24,6 +24,12 @@ def migrate_db():
     return {'message': 'Created tables and inserted sample data successfully!'}
 
 
+@app.get("/planes/")
+def get_all_planes():
+    db = SessionLocal()
+    return services.get_all_planes(db)
+
+
 @app.get("/flights/")
 def get_all_flights():
     db = SessionLocal()
