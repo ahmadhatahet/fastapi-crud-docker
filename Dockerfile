@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+RUN apt-get update \
+    && apt-get -yy install libmariadb-dev gcc
+
 # set work directory
 WORKDIR /app
 
