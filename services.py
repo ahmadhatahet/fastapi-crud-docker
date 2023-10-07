@@ -29,5 +29,15 @@ def read_flight(db, flight_id):
     return flight
 
 
+def insert_flight(db, flight):
+    db_flight = schema.Flight()
+    for var, value in flight.model_dump(exclude_none=True).items():
+        setattr(db_flight, var, value)
+    db.add(db_flight)
+    db.commit()
+    db.refresh(db_flight)
+    return flight
+
+
 if __name__ == "__main__":
     ...

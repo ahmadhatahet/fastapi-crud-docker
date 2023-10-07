@@ -40,6 +40,13 @@ def read_flight(flight_id):
     return flight
 
 
+@app.post("/flights/")
+def insert_flight(flight: Flight):
+    db = SessionLocal()
+    services.insert_flight(db, flight)
+    db.close()
+    return flight
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=5400, reload=True)
