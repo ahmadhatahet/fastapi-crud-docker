@@ -48,5 +48,18 @@ def insert_flight(flight: Flight):
     return flight
 
 
+@app.delete("/flights/{flight_id}")
+def delete_flight(flight_id: int):
+    db = SessionLocal()
+    flight = services.read_flight(db, flight_id)
+    if flight is None:
+        db.close()
+        raise HTTPException(status_code=404, detail="Flight not found!")
+    db.delete(flight)
+    db.commit()
+    db.close()
+    return {"message": "Flight deleted successfully"}
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="localhost", port=5400, reload=True)
