@@ -13,6 +13,7 @@ def main():
     return {
         'title': 'this is an API to perform CRUD operations on MariaDB',
         'docs': 'http://localhost:5404/docs',
+        'migrate': 'http://localhost:5404/migrate/',
         'flights': 'http://localhost:5404/flights/{flight_id}'
     }
 
