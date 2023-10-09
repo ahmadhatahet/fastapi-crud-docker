@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException
-from engine import SessionLocal
-from models import Flight, Plane
+from fastapi import FastAPI, HTTPException, Depends
+from models import Flight
 import services
 import uvicorn
+
 
 # FastAPI application
 app = FastAPI(title="CRUD using Fastapi and Docker")
@@ -18,45 +18,39 @@ def main():
 
 
 @app.get("/migrate/")
-def migrate_db():
-    db = SessionLocal()
+def migrate_db(db = Depends(services.get_db)):
     services.migrate_db(db)
     return {'message': 'Created tables and inserted sample data successfully!'}
 
 
 @app.get("/planes/")
-def get_all_planes():
-    db = SessionLocal()
+def get_all_planes(db = Depends(services.get_db)):
     return services.get_all_planes(db)
 
 
 @app.get("/flights/")
-def get_all_flights():
-    db = SessionLocal()
+def get_all_flights(db = Depends(services.get_db)):
     return services.get_all_flights(db)
 
 
 @app.get("/flights/{flight_id}")
-def read_flight(flight_id):
-    db = SessionLocal()
+def read_flight(flight_id, db = Depends(services.get_db)):
     flight = services.read_flight(db, flight_id)
-    db.close()
     if flight is None:
         raise HTTPException(status_code=404, detail="Flight not found!")
+    db.close()
     return flight
 
 
 @app.post("/flights/")
-def insert_flight(flight: Flight):
-    db = SessionLocal()
-    services.insert_flight(db, flight)
+def insert_flight(flight: Flight, db = Depends(services.get_db)):
+    flight = services.insert_flight(db, flight)
     db.close()
     return flight
 
 
 @app.delete("/flights/{flight_id}")
-def delete_flight(flight_id: int):
-    db = SessionLocal()
+def delete_flight(flight_id: int, db = Depends(services.get_db)):
     flight = services.read_flight(db, flight_id)
     if flight is None:
         db.close()
@@ -68,8 +62,7 @@ def delete_flight(flight_id: int):
 
 
 @app.put("/flights/{flight_id}")
-def update_flight(flight_id: int, flight: Flight):
-    db = SessionLocal()
+def update_flight(flight_id: int, flight: Flight, db = Depends(services.get_db)):
     db_flight = services.read_flight(db, flight_id)
     if db_flight is None:
         db.close()
