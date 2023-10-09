@@ -4,7 +4,33 @@ services:
   api:
     build: .
     command: python main.py
+    container_name: fastapiApp
     volumes:
       - .:/app
+    env_file:
+      - .env
     ports:
       - 5404:5400
+    depends_on:
+      - mariadb
+    networks:
+      - apiNetwork
+    restart: on-failure
+
+  mariadb:
+    image: mariadb
+    restart: always
+    container_name: mariadbContainer
+    env_file:
+      - mariadb.env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    expose:
+      - 3306
+    networks:
+      - apiNetwork
+volumes:
+  mariadb_data:
+
+networks:
+  apiNetwork:
